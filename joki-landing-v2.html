@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JokiPro — Solusi Tugas & Projek Terbaik</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080b10;
+        --bg2: #0d1117;
+        --accent: #00ffe0;
+        --accent2: #ff3cac;
+        --accent3: #ffd700;
+        --text: #e8eaf0;
+        --muted: #5a6070;
+        --card: #131926;
+        --border: rgba(0, 255, 224, 0.12);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* Custom cursor */
+      .cursor {
+        position: fixed;
+        width: 12px;
+        height: 12px;
+        background: var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          transform 0.1s ease,
+          width 0.2s,
+          height 0.2s,
+          background 0.2s;
+        mix-blend-mode: screen;
+      }
+      .cursor-ring {
+        position: fixed;
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          transform 0.18s ease,
+          width 0.3s,
+          height 0.3s;
+        opacity: 0.5;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9997;
+        opacity: 0.4;
+      }
+
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 255, 224, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 224, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 60px;
+        background: rgba(8, 11, 16, 0.7);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 28px;
+        letter-spacing: 3px;
+        color: var(--accent);
+        text-shadow: 0 0 30px rgba(0, 255, 224, 0.6);
+      }
+      .logo span {
+        color: var(--accent2);
+      }
+      .nav-cta {
+        font-family: "Space Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--accent);
+        border: none;
+        padding: 10px 24px;
+        cursor: none;
+        transition: all 0.25s;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      }
+      .nav-cta:hover {
+        background: var(--accent2);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(255, 60, 172, 0.4);
+      }
+
+      /* HERO */
+      .hero {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 40px 80px;
+        overflow: hidden;
+      }
+      .hero-glow {
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 224, 0.08) 0%,
+          transparent 65%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: pulse 4s ease-in-out infinite;
+      }
+      .hero-glow2 {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 60, 172, 0.06) 0%,
+          transparent 65%
+        );
+        top: 30%;
+        left: 20%;
+        pointer-events: none;
+        animation: pulse 5s ease-in-out infinite reverse;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.08);
+        }
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--accent);
+        border: 1px solid var(--border);
+        padding: 8px 20px;
+        margin-bottom: 36px;
+        animation: fadeUp 0.8s ease both;
+      }
+      .hero-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: blink 1s ease infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+      .hero-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(72px, 12vw, 160px);
+        line-height: 0.92;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+        animation: fadeUp 0.9s 0.1s ease both;
+      }
+      .hero-title .line1 {
+        display: block;
+        color: var(--text);
+      }
+      .hero-title .line2 {
+        display: block;
+        color: transparent;
+        -webkit-text-stroke: 2px var(--accent);
+      }
+      .hero-title .line3 {
+        display: block;
+        background: linear-gradient(90deg, var(--accent2), var(--accent3));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero-sub {
+        font-size: 16px;
+        color: #8a94a8;
+        max-width: 520px;
+        line-height: 1.7;
+        margin: 28px auto 48px;
+        animation: fadeUp 1s 0.2s ease both;
+      }
+      .hero-sub span {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .hero-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        animation: fadeUp 1s 0.3s ease both;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        font-family: "Space Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--accent);
+        border: none;
+        padding: 16px 40px;
+        cursor: none;
+        transition: all 0.25s;
+        clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+        font-weight: 700;
+      }
+      .btn-primary:hover {
+        background: white;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(0, 255, 224, 0.35);
+      }
+      .btn-ghost {
+        font-family: "Space Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: transparent;
+        border: 1px solid var(--border);
+        padding: 16px 40px;
+        cursor: none;
+        transition: all 0.25s;
+      }
+      .btn-ghost:hover {
+        border-color: var(--accent);
+        background: rgba(0, 255, 224, 0.05);
+        transform: translateY(-3px);
+      }
+      .hero-stats {
+        display: flex;
+        gap: 48px;
+        margin-top: 80px;
+        animation: fadeUp 1s 0.4s ease both;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .stat {
+        text-align: center;
+      }
+      .stat-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 48px;
+        color: var(--accent);
+        line-height: 1;
+        text-shadow: 0 0 20px rgba(0, 255, 224, 0.4);
+      }
+      .stat-label {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      section {
+        position: relative;
+        z-index: 1;
+      }
+      .section-label {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 16px;
+      }
+      .section-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(44px, 6vw, 80px);
+        line-height: 1;
+        margin-bottom: 16px;
+      }
+      .section-sub {
+        color: #8a94a8;
+        font-size: 15px;
+        line-height: 1.7;
+        max-width: 480px;
+      }
+
+      /* SERVICES */
+      .services {
+        padding: 120px 60px;
+        max-width: 1300px;
+        margin: 0 auto;
+      }
+      .services-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 72px;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+
+      /* ── CARDS — improved readability ── */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 48px 40px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: none;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 255, 224, 0.04) 0%,
+          transparent 50%
+        );
+        opacity: 0;
+        transition: opacity 0.35s;
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
+      .card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--card-accent, var(--accent));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card:hover::after {
+        transform: scaleX(1);
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: var(--card-accent, rgba(0, 255, 224, 0.3));
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.4),
+          0 0 40px var(--card-glow, rgba(0, 255, 224, 0.08));
+      }
+      .card:nth-child(1) {
+        --card-accent: var(--accent);
+        --card-glow: rgba(0, 255, 224, 0.08);
+      }
+      .card:nth-child(2) {
+        --card-accent: var(--accent2);
+        --card-glow: rgba(255, 60, 172, 0.08);
+      }
+      .card:nth-child(3) {
+        --card-accent: var(--accent3);
+        --card-glow: rgba(255, 215, 0, 0.08);
+      }
+      .card:nth-child(4) {
+        --card-accent: var(--accent2);
+        --card-glow: rgba(255, 60, 172, 0.12);
+        border: 1px solid rgba(255, 60, 172, 0.25);
+        background: linear-gradient(135deg, #1a0d20 0%, #131926 100%);
+      }
+
+      .card-icon {
+        width: 56px;
+        height: 56px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 28px;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        background: rgba(0, 255, 224, 0.05);
+      }
+      .card:nth-child(2) .card-icon {
+        background: rgba(255, 60, 172, 0.05);
+      }
+      .card:nth-child(3) .card-icon {
+        background: rgba(255, 215, 0, 0.05);
+      }
+      .card:nth-child(4) .card-icon {
+        background: rgba(255, 60, 172, 0.08);
+      }
+
+      .card-num {
+        position: absolute;
+        top: 24px;
+        right: 28px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 80px;
+        color: rgba(255, 255, 255, 0.04);
+        line-height: 1;
+        pointer-events: none;
+      }
+      .card-tag {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--card-accent, var(--accent));
+        margin-bottom: 12px;
+        font-weight: 700;
+      }
+      .card-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 36px;
+        letter-spacing: 1px;
+        line-height: 1.05;
+        color: #ffffff; /* pure white for max readability */
+        margin-bottom: 14px;
+      }
+
+      /* ── IMPROVED: desc brighter + bigger ── */
+      .card-desc {
+        font-size: 15px;
+        color: #b8c2d0; /* was #5a6070, now much lighter */
+        line-height: 1.72;
+        margin-bottom: 28px;
+        font-weight: 500;
+      }
+
+      /* ── IMPROVED: price box with accent border ── */
+      .card-price {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 24px;
+        padding: 14px 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border-left: 3px solid var(--card-accent, var(--accent));
+      }
+      .price-from {
+        font-family: "Space Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: #8a94a8;
+        text-transform: uppercase;
+      }
+      .price-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 52px;
+        color: var(--card-accent, var(--accent));
+        line-height: 1;
+        text-shadow: 0 0 30px var(--card-glow, rgba(0, 255, 224, 0.4));
+      }
+      .price-unit {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        color: #8a94a8;
+      }
+
+      /* ── IMPROVED: features brighter text ── */
+      .card-features {
+        list-style: none;
+        margin-bottom: 36px;
+      }
+      .card-features li {
+        font-size: 14px;
+        color: #c8d2e0; /* was #5a6070, now clearly readable */
+        padding: 7px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+      }
+      .card-features li:last-child {
+        border-bottom: none;
+      }
+      .card-features li::before {
+        content: "▹";
+        color: var(--card-accent, var(--accent));
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .card-btn {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--card-accent, var(--accent));
+        background: transparent;
+        border: 1px solid currentColor;
+        padding: 12px 28px;
+        cursor: none;
+        transition: all 0.25s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .card-btn:hover {
+        background: var(--card-accent, var(--accent));
+        color: var(--bg);
+      }
+      .card-btn::after {
+        content: "→";
+        transition: transform 0.2s;
+      }
+      .card-btn:hover::after {
+        transform: translateX(4px);
+      }
+
+      .card-popular {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-family: "Space Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #ffffff;
+        background: var(--accent2);
+        padding: 5px 12px;
+        clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+        font-weight: 700;
+      }
+
+      /* DIVIDER */
+      .divider {
+        border: none;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--border) 30%,
+          var(--border) 70%,
+          transparent
+        );
+        margin: 0 60px;
+      }
+
+      /* HOW IT WORKS */
+      .how {
+        padding: 120px 60px;
+        max-width: 1300px;
+        margin: 0 auto;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        margin-top: 72px;
+        position: relative;
+      }
+      .steps::before {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 15%;
+        width: 70%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          var(--accent),
+          var(--accent2),
+          var(--accent3),
+          var(--accent2)
+        );
+        opacity: 0.3;
+      }
+      .step {
+        text-align: center;
+        padding: 0 20px;
+      }
+      .step-num {
+        width: 56px;
+        height: 56px;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        background: var(--card);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        color: var(--accent);
+        margin: 0 auto 24px;
+        position: relative;
+        z-index: 1;
+      }
+      .step-title {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .step-desc {
+        font-size: 13px;
+        color: #8a94a8;
+        line-height: 1.6;
+      }
+
+      /* CTA */
+      .cta-section {
+        padding: 120px 60px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 50% 50%,
+            rgba(0, 255, 224, 0.06) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 30% 80%,
+            rgba(255, 60, 172, 0.05) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+      .cta-section .section-title {
+        font-size: clamp(56px, 8vw, 100px);
+      }
+      .cta-big-text {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(80px, 15vw, 200px);
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(0, 255, 224, 0.1);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: 8px;
+      }
+
+      /* FOOTER */
+      footer {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid var(--border);
+        padding: 40px 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .footer-note {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 24px;
+      }
+      .footer-socials a {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        cursor: none;
+        transition: color 0.2s;
+      }
+      .footer-socials a:hover {
+        color: var(--accent);
+      }
+
+      /* SCROLL REVEAL */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal:nth-child(2) {
+        transition-delay: 0.1s;
+      }
+      .reveal:nth-child(3) {
+        transition-delay: 0.2s;
+      }
+      .reveal:nth-child(4) {
+        transition-delay: 0.3s;
+      }
+
+      /* TICKER */
+      .ticker-wrap {
+        overflow: hidden;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 0;
+        background: var(--card);
+      }
+      .ticker {
+        display: flex;
+        animation: ticker 18s linear infinite;
+        width: max-content;
+      }
+      .ticker-item {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 18px;
+        letter-spacing: 4px;
+        padding: 0 40px;
+        white-space: nowrap;
+      }
+      .ticker-item.accent {
+        color: var(--accent);
+      }
+      .ticker-item.pink {
+        color: var(--accent2);
+      }
+      .ticker-item.gold {
+        color: var(--accent3);
+      }
+      @keyframes ticker {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 24px;
+        }
+        .services,
+        .how,
+        .cta-section,
+        footer {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+        .cards-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+        }
+        .steps::before {
+          display: none;
+        }
+        .divider {
+          margin: 0 24px;
+        }
+        .hero-stats {
+          gap: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="grid-bg"></div>
+
+    <!-- NAV -->
+    <nav>
+      <div class="logo">JOKI<span>PRO</span></div>
+      <button
+        class="nav-cta"
+        onclick="
+          document
+            .getElementById('layanan')
+            .scrollIntoView({ behavior: 'smooth' })
+        "
+      >
+        Order Sekarang
+      </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-glow2"></div>
+      <div class="hero-badge">
+        ✦ Buka Jasa &nbsp;·&nbsp; Cepat &nbsp;·&nbsp; Terpercaya ✦
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">SOLUSI</span>
+        <span class="line2">TUGAS</span>
+        <span class="line3">SELESAI</span>
+      </h1>
+      <p class="hero-sub">
+        Gak mau pusing sama tugas kuliah? Kami hadir buat bantu lo dari
+        <span>perancangan sistem</span>, <span>laporan</span>, sampai
+        <span>website fullset</span> — hasil pro, harga bisa dinegosiasi.
+      </p>
+      <div class="hero-btns">
+        <button
+          class="btn-primary"
+          onclick="
+            document
+              .getElementById('layanan')
+              .scrollIntoView({ behavior: 'smooth' })
+          "
+        >
+          Lihat Layanan
+        </button>
+        <button
+          class="btn-ghost"
+          onclick="
+            document
+              .getElementById('cara')
+              .scrollIntoView({ behavior: 'smooth' })
+          "
+        >
+          Cara Order
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">200+</div>
+          <div class="stat-label">Order Selesai</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Kepuasan Client</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24H</div>
+          <div class="stat-label">Respon Cepat</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4★</div>
+          <div class="stat-label">Rating Rata-rata</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <span class="ticker-item accent">JOKI LAPORAN</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item pink">JOKI WEBSITE</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item gold">JOKI SISTEM</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item accent">FULLSET TERSEDIA</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item pink">HASIL PROFESSIONAL</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item gold">GARANSI REVISI</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item accent">JOKI LAPORAN</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item pink">JOKI WEBSITE</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item gold">JOKI SISTEM</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item accent">FULLSET TERSEDIA</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item pink">HASIL PROFESSIONAL</span>
+        <span class="ticker-item">✦</span>
+        <span class="ticker-item gold">GARANSI REVISI</span>
+        <span class="ticker-item">✦</span>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section class="services" id="layanan">
+      <div class="services-header">
+        <div>
+          <div class="section-label">// Layanan Kami</div>
+          <h2 class="section-title">PILIH<br />JASA LO</h2>
+        </div>
+        <p class="section-sub">
+          Semua layanan dikerjain dengan serius, anti plagiat, dan siap direvisi
+          sampai lo puas beneran.
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1 -->
+        <div class="card reveal">
+          <div class="card-num">01</div>
+          <div class="card-icon">🗂️</div>
+          <div class="card-tag">// Layanan 01</div>
+          <h3 class="card-title">JOKI PERANCANGAN SISTEM</h3>
+          <p class="card-desc">
+            Dari Use Case, ERD, DFD, flowchart, Activity Diagram, sampai
+            dokumentasi sistem — semua gua handle rapi dan terstruktur.
+          </p>
+          <div class="card-price">
+            <span class="price-from">Mulai dari</span>
+            <span class="price-num">250K</span>
+            <span class="price-unit">/ dokumen</span>
+          </div>
+          <ul class="card-features">
+            <li>Use Case & Activity Diagram</li>
+            <li>ERD & Database Schema</li>
+            <li>DFD Level 0, 1, 2</li>
+            <li>Dokumentasi Teknis Lengkap</li>
+          </ul>
+          <a href="https://wa.me/6285156453810" class="card-btn" target="_blank"
+            >Order Sekarang</a
+          >
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card reveal">
+          <div class="card-num">02</div>
+          <div class="card-icon">📄</div>
+          <div class="card-tag">// Layanan 02</div>
+          <h3 class="card-title">JOKI LAPORAN</h3>
+          <p class="card-desc">
+            Laporan Skripsi bab 1-5, atau tugas akhir — ditulis natural, aman
+            dari plagiasi, format kampus.
+          </p>
+          <div class="card-price">
+            <span class="price-from">Mulai dari</span>
+            <span class="price-num">150K</span>
+            <span class="price-unit">/ Dokumen</span>
+          </div>
+          <ul class="card-features">
+            <li>Skripsi</li>
+            <li>Tugas & Paper Kuliah</li>
+            <li>Format Sesuai Kampus</li>
+            <li>Gratis Cek Plagiarisme</li>
+          </ul>
+          <a
+            href="https://wa.me/628xxxxxxxxx?text=Halo, saya mau order Joki Laporan"
+            class="card-btn"
+            target="_blank"
+            >Order Sekarang</a
+          >
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card reveal">
+          <div class="card-num">03</div>
+          <div class="card-icon">💻</div>
+          <div class="card-tag">// Layanan 03</div>
+          <h3 class="card-title">JOKI WEBSITE</h3>
+          <p class="card-desc">
+            Website tugas kuliah, CRUD sederhana, atau landing page — dikerjain
+            beneran, bukan template doang.
+          </p>
+          <div class="card-price">
+            <span class="price-from">Mulai dari</span>
+            <span class="price-num">500K</span>
+            <span class="price-unit">/ project</span>
+          </div>
+          <ul class="card-features">
+            <li>HTML / CSS / JS Native</li>
+            <li>PHP, Laravel, CodeIgniter</li>
+            <li>CRUD + Database MySQL</li>
+            <li>Free Hosting Setup (opsional)</li>
+          </ul>
+          <a
+            href="https://wa.me/628xxxxxxxxx?text=Halo, saya mau order Joki Website"
+            class="card-btn"
+            target="_blank"
+            >Order Sekarang</a
+          >
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card reveal">
+          <div class="card-popular">★ TERLARIS</div>
+          <div class="card-num">04</div>
+          <div class="card-icon">🔥</div>
+          <div class="card-tag">// Layanan 04 — Best Deal</div>
+          <h3 class="card-title">JOKI FULLSET SKRIPSI</h3>
+          <p class="card-desc">
+            Paket komplit: sistem + laporan + website sekaligus. Satu harga, lo
+            tinggal duduk manis dan kirim ke dosen.
+          </p>
+          <div class="card-price">
+            <span class="price-from">Mulai dari</span>
+            <span class="price-num">1.5 JUTA</span>
+            <span class="price-unit">/ paket</span>
+          </div>
+          <ul class="card-features">
+            <li>Perancangan Sistem Lengkap</li>
+            <li>Laporan Terformat Rapi</li>
+            <li>Website / Aplikasi Jalan</li>
+            <li>Free Revisi 3 kali</li>
+          </ul>
+          <a
+            href="https://wa.me/628xxxxxxxxx?text=Halo, saya mau order Paket Fullset"
+            class="card-btn"
+            target="_blank"
+            >Order Sekarang</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- HOW IT WORKS -->
+    <section class="how" id="cara">
+      <div style="text-align: center">
+        <div class="section-label" style="text-align: center">
+          // Cara Kerja
+        </div>
+        <h2 class="section-title" style="text-align: center">
+          4 LANGKAH<br />MUDAH
+        </h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <div class="step-title">Hubungi Kami</div>
+          <p class="step-desc">
+            Chat via WhatsApp atau DM Instagram. Ceritain detail tugas lo.
+          </p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <div class="step-title">Deal Harga</div>
+          <p class="step-desc">
+            Diskusi scope pekerjaan & harga. Harga final sesuai kompleksitas.
+          </p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <div class="step-title">Bayar & Mulai</div>
+          <p class="step-desc">
+            DP 50% di awal, kami langsung gas kerjain tugasnya.
+          </p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">04</div>
+          <div class="step-title">Terima Hasil</div>
+          <p class="step-desc">
+            File dikirim, cek & revisi gratis sampai lo puas 100%.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-big-text">ORDER</div>
+      <div style="position: relative; z-index: 1">
+        <div class="section-label">// Gak Perlu Nunggu Lama</div>
+        <h2 class="section-title">
+          SIAP ORDER<br /><span style="color: var(--accent)">SEKARANG?</span>
+        </h2>
+        <p
+          style="
+            color: #8a94a8;
+            margin: 20px auto 48px;
+            max-width: 420px;
+            font-size: 15px;
+            line-height: 1.7;
+          "
+        >
+          Deadline makin deket? Langsung chat aja, respon biasanya dalam
+          hitungan menit.
+        </p>
+        <div
+          style="
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+          "
+        >
+          <a
+            href="https://wa.me/6285156453810"
+            target="_blank"
+            class="btn-primary"
+            style="
+              text-decoration: none;
+              display: inline-flex;
+              align-items: center;
+              gap: 10px;
+            "
+            >💬 Chat WhatsApp</a
+          >
+          <a
+            href="https://www.instagram.com/agungekaprtma/"
+            class="btn-ghost"
+            style="
+              text-decoration: none;
+              display: inline-flex;
+              align-items: center;
+              gap: 10px;
+            "
+            >📸 Instagram</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="logo">JOKI<span>PRO</span></div>
+      <div class="footer-note">
+        © 2025 JokiPro · All rights reserved · Made with 🔥
+      </div>
+      <div class="footer-socials">
+        <a href="#">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="#">Telegram</a>
+      </div>
+    </footer>
+
+    <script>
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        cursor.style.left = mx + "px";
+        cursor.style.top = my + "px";
+      });
+
+      function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + "px";
+        ring.style.top = ry + "px";
+        requestAnimationFrame(animRing);
+      }
+      animRing();
+
+      document.querySelectorAll("button, a, .card").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+          cursor.style.width = "20px";
+          cursor.style.height = "20px";
+          cursor.style.background = "var(--accent2)";
+          ring.style.width = "56px";
+          ring.style.height = "56px";
+        });
+        el.addEventListener("mouseleave", () => {
+          cursor.style.width = "12px";
+          cursor.style.height = "12px";
+          cursor.style.background = "var(--accent)";
+          ring.style.width = "36px";
+          ring.style.height = "36px";
+        });
+      });
+
+      const reveals = document.querySelectorAll(".reveal");
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      reveals.forEach((el) => obs.observe(el));
+    </script>
+  </body>
+</html>
